@@ -45,3 +45,10 @@ So, you have this new mission, to build the POC foundations of this brand new mi
 - ``Trello``
 
 
+## 🤖 Run the project
+After downloading the project, you must open it in visual studio code and open the terminal and type the following commands:
+- npm i - command responsible for installing all project dependencies
+- tsc - to compile TypeScript files into JavaScript
+- npm start - to execute the project
+
+
