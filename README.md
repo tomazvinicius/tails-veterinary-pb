@@ -50,5 +50,6 @@ After downloading the project, you must open it in visual studio code and open t
 - npm i - command responsible for installing all project dependencies
 - tsc - to compile TypeScript files into JavaScript
 - npm start - to execute the project
+- download the insomnia folder to test the routes
 
 
