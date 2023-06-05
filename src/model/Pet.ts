@@ -1,3 +1,5 @@
+import Joi from "joi";
+
 export class Pet {
 
     id: number;
@@ -6,7 +8,6 @@ export class Pet {
     carry: string;
     weight: number;
     date_of_birth: Date;
-
 
     constructor(
         id: number,
@@ -25,5 +26,16 @@ export class Pet {
         this.date_of_birth = date_of_bitrh;
     }
 
+    static validate(pet: Pet): Joi.ValidationResult {
+        const tutorSchema = Joi.object<Pet>({
+            id: Joi.number(),
+            name: Joi.string().required(),
+            species: Joi.string().required(),
+            carry: Joi.string().required(),
+            weight: Joi.number().required(),
+            date_of_birth: Joi.string().required(),
 
+        })
+        return tutorSchema.validate(pet)
+    }
 }

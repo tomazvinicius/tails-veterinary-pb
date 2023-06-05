@@ -1,8 +1,8 @@
-import express from "express";
 import TutorRoutes from "./routes/TutorRoutes";
 import PetRoutes from "./routes/PetRoutes";
-const app = express();
+import express from "express";
 
+const app = express();
 
 app.use(express.json());
 

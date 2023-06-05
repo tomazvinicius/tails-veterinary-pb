@@ -1,12 +1,10 @@
 import { Router } from "express";
-
 import {
     createTutor,
     getTutors,
     updateTutorById,
     deleteTutor
 } from "../controllers/TutorController"
-
 
 const router = Router();
 

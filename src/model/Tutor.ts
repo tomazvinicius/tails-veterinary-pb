@@ -1,4 +1,5 @@
-import { Pet } from "./Pet"
+import Joi from "joi";
+import { Pet } from "./Pet";
 
 export class Tutor {
     id: number;
@@ -27,6 +28,18 @@ export class Tutor {
         this.pets = pets;
     }
 
+    static validate(tutor: Tutor): Joi.ValidationResult {
+        const tutorSchema = Joi.object<Tutor>({
+            id: Joi.number(),
+            name: Joi.string().required(),
+            phone: Joi.string().required(),
+            email: Joi.string().required(),
+            date_of_birth: Joi.string().required(),
+            zip_code: Joi.string().required(),
+            pets: Joi.allow()
+        })
+        return tutorSchema.validate(tutor)
+    }
 
 
 }

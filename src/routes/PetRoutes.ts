@@ -1,11 +1,9 @@
 import { Router } from "express";
-
 import {
     createPet,
     updatePetById,
     deletePetById
 } from "../controllers/PetController"
-
 
 const router = Router();
 
