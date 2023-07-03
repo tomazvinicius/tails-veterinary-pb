@@ -1,41 +1,38 @@
-import Joi from "joi";
+import { Schema, Document, model } from "mongoose";
 
-export class Pet {
-
-    id: number;
-    name: string;
-    species: string;
-    carry: string;
-    weight: number;
-    date_of_birth: Date;
-
-    constructor(
-        id: number,
-        name: string,
-        species: string,
-        carry: string,
-        weight: number,
-        date_of_bitrh: Date
-
-    ) {
-        this.id = id;
-        this.name = name;
-        this.species = species;
-        this.carry = carry;
-        this.weight = weight;
-        this.date_of_birth = date_of_bitrh;
-    }
-
-    static validate(pet: Pet): Joi.ValidationResult {
-        const tutorSchema = Joi.object<Pet>({
-            id: Joi.number(),
-            name: Joi.string().required(),
-            species: Joi.string().required(),
-            carry: Joi.string().required(),
-            weight: Joi.number().required(),
-            date_of_birth: Joi.string().required(),
-
-        })
-        return tutorSchema.validate(pet)
-    }
+export interface Pet extends Document {
+  name: string;
+  species: string;
+  carry: string;
+  weight: number;
+  date_of_birth: Date;
 }
+
+const petSchema = new Schema<Pet>({
+  name: {
+    type: String,
+    required: [true, "Name is required"],
+    minlength: [3, "Name must be greater"],
+  },
+  species: {
+    type: String,
+    required: [true, "Species is required"],
+  },
+  carry: {
+    type: String,
+    required: [true, "Carry is required"],
+  },
+  weight: {
+    type: Number,
+    required: [true, "Weight is required"],
+    min: [0.1, "The pet weight must be greater than 0"],
+  },
+  date_of_birth: {
+    type: Date,
+    required: [true, "Date of birth is required"],
+  },
+});
+
+const PetModel = model<Pet>("Pet", petSchema);
+
+export default PetModel;
