@@ -1,6 +1,6 @@
 
 import { Request, Response } from "express";
-import TutorService from "../services/tutorservice";
+import TutorService from "../services/TutorService";
 import { Tutor } from "../models/Tutor";
 
 const tutorService = new TutorService();

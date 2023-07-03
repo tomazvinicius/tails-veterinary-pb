@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import PetService from "../services/petService";
-import TutorService from "../services/tutorservice";
+import PetService from "../services/PetService";
+import TutorService from "../services/TutorService";
 import { Pet } from "../models/Pet";
 
 const petService = new PetService();
