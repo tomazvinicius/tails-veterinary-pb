@@ -1,45 +1,57 @@
-import Joi from "joi";
-import { Pet } from "./Pet";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
-export class Tutor {
-    id: number;
-    name: string;
-    phone: string;
-    email: string;
-    date_of_birth: Date;
-    zip_code: string;
-    pets: Pet[];
-
-    constructor(
-        id: number,
-        name: string,
-        phone: string,
-        email: string,
-        date_of_bitrh: Date,
-        zip_code: string,
-        pets: Pet[] = [],
-    ) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.date_of_birth = date_of_bitrh;
-        this.zip_code = zip_code;
-        this.pets = pets;
-    }
-
-    static validate(tutor: Tutor): Joi.ValidationResult {
-        const tutorSchema = Joi.object<Tutor>({
-            id: Joi.number(),
-            name: Joi.string().required(),
-            phone: Joi.string().required(),
-            email: Joi.string().required(),
-            date_of_birth: Joi.string().required(),
-            zip_code: Joi.string().required(),
-            pets: Joi.allow()
-        })
-        return tutorSchema.validate(tutor)
-    }
-
-
+export interface Tutor extends Document {
+  name: string;
+  phone: string;
+  email: string;
+  date_of_birth: Date;
+  zip_code: string;
+  password: string;
+  pets: Types.Array<Types.ObjectId>;
 }
+
+const tutorSchema: Schema<Tutor> = new Schema<Tutor>({
+  name: {
+    type: String,
+    required: [true, "Name is required"],
+    minlength: [4, "Name must be at least 4 characters long"],
+  },
+  phone: {
+    type: String,
+    required: [true, "Phone is required"],
+  },
+  email: {
+    type: String,
+    required: [true, "Tutor email is required"],
+    validate: {
+      validator: function (email: string) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      },
+      message: (props: { value: string }) => `${props.value} is not a valid email address!`,
+    },
+    unique: true,
+  },
+  date_of_birth: {
+    type: Date,
+    required: [true, "Date of birth is required"],
+  },
+  zip_code: {
+    type: String,
+    required: [true, "Zip code is required"],
+    minlength: [9, "Zip code must be 9 characters long"],
+  },
+  password: {
+    type: String,
+    required: [true, "Tutor password is required"],
+  },
+  pets: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Pet",
+    },
+  ],
+});
+
+const TutorModel = mongoose.model<Tutor>("Tutor", tutorSchema);
+
+export default TutorModel;

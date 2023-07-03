@@ -45,15 +45,15 @@ class TutorService {
     }
   }
 
-  async addPetToTutor(tutorId: string, petData: Pet): Promise<Pet> {
-    try {
-      const createdPet: Pet = await petRepository.createPet(petData);
-      await tutorRepository.addPetToTutor(tutorId, createdPet._id.toString());
-      return createdPet;
-    } catch (error) {
-      throw new Error("Failed to add pet to tutor");
-    }
-  }
+//   async addPetToTutor(tutorId: string, petData: Pet): Promise<Pet> {
+//     try {
+//       const createdPet: Pet = await petRepository.createPet(petData);
+//       await tutorRepository.addPetToTutor(tutorId, createdPet._id.toString());
+//       return createdPet;
+//     } catch (error) {
+//       throw new Error("Failed to add pet to tutor");
+//     }
+//   }
 }
 
 export default TutorService;
