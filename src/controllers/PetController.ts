@@ -1,127 +1,48 @@
 import { Request, Response } from "express";
+import PetService from "../services/petService";
+import TutorService from "../services/tutorService";
 import { Pet } from "../models/Pet";
-import {
-    getIdTutor,
-    addPetInTutor,
-    updatePetInTutor,
-    deletePetInTutor
-} from "../controllers/TutorController";
 
-const pet: Pet[] = [];
+const petService = new PetService();
+const tutorService = new TutorService();
 
-const createPet = (req: Request, res: Response) => {
-
+class PetController{
+  async createPet(req: Request, res: Response):Promise<void>  {
     try {
-        // Search for id by url
-        const tutorId = Number(req.params.tutorId);
-        // Look for id inside array
-        const tutorIndex = getIdTutor(tutorId)
-
-        if (tutorIndex === -1) {
-            return res.status(404).json({ message: 'Tutor not found' });
-        }
-        let id = pet.length + 1
-        // Get body data
-        const { name, species, carry, weight, date_of_birth } = req.body as {
-            id: number;
-            name: string;
-            species: string;
-            carry: string;
-            weight: number;
-            date_of_birth: Date;
-        };
-        // Create pet
-        const newPet: Pet = { id, name, species, carry, weight, date_of_birth };
-        pet.push(newPet)
-
-        // Validating pet
-        const { error } = Pet.validate(newPet)
-        if (error) {
-            res.status(500).json(error.message);
-        } else {
-            // Adding pet in tutor
-            addPetInTutor(newPet, tutorIndex);
-            res.status(200).json({ message: "We have finished creating the pet!", Pets: newPet })
-        }
-
+        const tutorId: string = req.params.tutorId;
+        const petData: Pet = req.body;
+  
+        const createdPet: Pet = await tutorService.addPetToTutor(
+          tutorId,
+          petData
+        );
+  
+        res.json(createdPet);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Failed to create pet" });
+      }
+}
+async updatePetById(req: Request, res: Response): Promise<void>  {
+  try {
+      const petId: string = req.params.id;
+      const petData: Pet = req.body;
+      const editedPet: Pet = await petService.updatePet(petId, petData);
+      res.json(editedPet);
     } catch (error) {
-        throw new Error("Unable to create pet, please try again!")
+      res.status(500).json({ error: "Failed to edit pet" });
     }
 }
 
-const updatePetById = (req: Request, res: Response) => {
-    try {
-        // Search for id by url
-        const tutorId = Number(req.params.tutorId);
-        const petId = Number(req.params.petId);
-
-        let id = pet.length
-        // Get body data
-        const { name, species, carry, weight, date_of_birth } = req.body as {
-            id: number;
-            name: string;
-            species: string;
-            carry: string;
-            weight: number;
-            date_of_birth: Date;
-        };
-        // Look for id pet inside array
-        const petIndex = pet.findIndex((pet) => pet.id === petId);
-
-        if (petIndex === -1) {
-            res.status(404).json("Pet not found");
-        }
-        // Look for id tutor inside array
-        const tutorIndex = getIdTutor(tutorId);
-
-        if (tutorIndex === -1) {
-            res.status(404).json("Tutor not found");
-        }
-        // Create pet
-        const newPet = new Pet(id, name, species, carry, weight, date_of_birth);
-
-        // Validating pet
-        const { error } = Pet.validate(newPet)
-        if (error) {
-            res.status(500).json(error.message);
-        } else {
-            // Adding pet in tutor
-            pet[petIndex] = newPet;
-            updatePetInTutor(newPet, tutorIndex, petIndex);
-            res.status(200).json({ msg: "Pet updated successfully", NewPet: pet[petIndex] });
-        }
-
+async deletePetById(req: Request, res: Response):Promise<void>  {
+  try {
+      const petId: string = req.params.id;
+      await petService.deletePet(petId);
+      res.sendStatus(204);
     } catch (error) {
-        throw new Error("Unable to update pet, please try again!")
-    }
-}
-const deletePetById = (req: Request, res: Response) => {
-
-    try {
-        // Search for id by url
-        const tutorId = Number(req.params.tutorId);
-        const petId = Number(req.params.petId);
-        // Look for id pet inside array
-        const petIndex = pet.findIndex((pet) => pet.id === petId)
-        if (petIndex < -1) {
-            throw new Error("Could not find pet")
-        }
-        const tutorIndex = getIdTutor(tutorId);
-
-        if (tutorIndex === -1) {
-            res.status(404).json("Tutor not found");
-        }
-        // Deleting tutor
-        pet.splice(petIndex, 1);
-        deletePetInTutor(tutorIndex, petIndex)
-        res.status(200).json({ message: "We have completed deleting the pet!" })
-    } catch (error) {
-        throw new Error("Unable to delete pet, please try again!")
+      res.status(500).json({ error: "Failed to delete pet" });
     }
 }
 
-export {
-    createPet,
-    updatePetById,
-    deletePetById
 }
+export default PetController;
