@@ -1,10 +1,10 @@
 import { Tutor } from "../models/Tutor";
-
+import { Pet } from "../models/Pet";
 import TutorRepository from "../repositories/tutorRepository";
-
+import PetRepository from "../repositories/petRepository";
 
 const tutorRepository = new TutorRepository();
-
+const petRepository = new PetRepository();
 
 class TutorService {
   async getTutors(): Promise<Tutor[]> {
@@ -45,15 +45,15 @@ class TutorService {
     }
   }
 
-//   async addPetToTutor(tutorId: string, petData: Pet): Promise<Pet> {
-//     try {
-//       const createdPet: Pet = await petRepository.createPet(petData);
-//       await tutorRepository.addPetToTutor(tutorId, createdPet._id.toString());
-//       return createdPet;
-//     } catch (error) {
-//       throw new Error("Failed to add pet to tutor");
-//     }
-//   }
+  async addPetToTutor(tutorId: string, petData: Pet): Promise<Pet> {
+    try {
+      const createdPet: Pet = await petRepository.createPet(petData);
+      await tutorRepository.addPetToTutor(tutorId, createdPet._id.toString());
+      return createdPet;
+    } catch (error) {
+      throw new Error("Failed to add pet to tutor");
+    }
+  }
 }
 
 export default TutorService;
