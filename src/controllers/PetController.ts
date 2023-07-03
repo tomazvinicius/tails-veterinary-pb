@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Pet } from "../model/Pet";
+import { Pet } from "../models/Pet";
 import {
     getIdTutor,
     addPetInTutor,

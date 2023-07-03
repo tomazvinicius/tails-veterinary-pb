@@ -1,136 +1,58 @@
+
 import { Request, Response } from "express";
-import { Tutor } from "../model/Tutor";
-import { Pet } from "../model/Pet";
+import TutorService from "../services/tutorservice";
+import { Tutor } from "../models/Tutor";
 
-const tutor: Tutor[] = [];
+const tutorService = new TutorService();
 
-
-const createTutor = (req: Request, res: Response) => {
-
+ class TutorController {
+  async getTutors(req: Request, res: Response): Promise<void> {
     try {
-        let id = tutor.length + 1
-        // Get body data
-        const { name, phone, email, date_of_birth, zip_code, pet } = req.body as {
-            name: string;
-            phone: string;
-            email: string;
-            date_of_birth: Date;
-            zip_code: string;
-            pet: [];
-        };
-
-        // Create tutor
-        const newTutor = new Tutor(id, name, phone, email, date_of_birth, zip_code, pet);
-
-        // Validating tutor
-        const { error } = Tutor.validate(newTutor)
-        if (error) {
-            res.status(500).json(error.message);
-        } else {
-            // Update in tutor
-            tutor.push(newTutor);
-            res.status(200).json({ message: "We have finished creating the tutor!", tutor: newTutor })
-        }
+      const tutors: Tutor[] = await tutorService.getTutors();
+      res.json(tutors);
     } catch (error) {
-        throw new Error("Unable to create tutor, try again!")
+      res.status(500).json({ error: "Failed to fetch tutors" });
+      console.log(error);
     }
-};
+  }
 
-const getTutors = (req: Request, res: Response) => {
+  async createTutor(req: Request, res: Response): Promise<void> {
     try {
-        res.status(200).json({ tutors: tutor });
+      const tutorData: Tutor = req.body;
+      const createdTutor: Tutor = await tutorService.createTutor(tutorData);
+      res.json(createdTutor);
     } catch (error) {
-        res.status(500).json(error);
+      res.status(500).json( console.log );
     }
-}
+  }
 
-const updateTutorById = (req: Request, res: Response) => {
+  async updateTutor(req: Request, res: Response): Promise<void> {
     try {
-        // Search for id by url
-        const tutorId = Number(req.params.id);
-
-        let id = tutor.length
-        // Get body data
-        const { name, phone, email, date_of_birth, zip_code } = req.body as {
-            name: string;
-            phone: string;
-            email: string;
-            date_of_birth: Date;
-            zip_code: string;
-            pet: []
-        };
-        // Look for id tutor inside array
-        const tutorIndex = tutor.findIndex((tutor) => tutor.id === tutorId);
-        // Look for id pet inside array
-        const pets = tutor.find((tutor) => tutor.id === tutorId);
-        // To put the old pets inside the tutor that is being updated
-        const oldPets = pets?.pets;
-        if (tutorIndex === -1) {
-            throw new Error("Could not find tutor")
-        }
-        // Get body data
-        tutor[tutorIndex] = new Tutor(
-            id,
-            name,
-            phone,
-            email,
-            date_of_birth,
-            zip_code,
-            oldPets
-        );
-        // Validating tutor
-        const { error } = Tutor.validate(tutor[tutorIndex])
-        if (error) {
-            res.status(500).json(error.message);
-        } else {
-            res.status(200).json("We have completed the tutor update!")
-        }
+      const tutorId: string = req.params.id;
+      const tutorData: Tutor = req.body;
+      const editedTutor: Tutor = await tutorService.updateTutor(
+        tutorId,
+        tutorData
+      );
+      res.json(editedTutor);
     } catch (error) {
-        throw new Error("Unable to update tutor, please try again!")
+      res.status(500).json({ error: "Failed to edit tutor" });
     }
-}
+  }
 
-const deleteTutor = (req: Request, res: Response) => {
-
+  async deleteTutor(req: Request, res: Response): Promise<void> {
     try {
-        // Search for id by url
-        const tutorId = Number(req.params.id);
-        // Look for id tutor inside array
-        const tutorIndex = tutor.findIndex((tutor) => tutor.id === tutorId)
-        if (tutorIndex === -1) {
-            throw new Error("Could not find tutor")
-        }
-        // Deleting tutor
-        tutor.splice(tutorIndex, 1);
-        res.status(200).json({ message: "We have completed deleting the tutor!" })
+      const tutorId: string = req.params.id;
+      await tutorService.deleteTutor(tutorId);
+      res.sendStatus(204);
     } catch (error) {
-        throw new Error("Unable to delete tutor, try again!")
+      res.status(500).json({ error: "Failed to delete tutor" });
     }
+  }
 }
 
-export function getIdTutor(tutorId: number) {
+export default TutorController;
 
-    const tutorIndex = tutor.findIndex((tutor) => tutor.id === tutorId);
 
-    return tutorIndex;
-}
 
-export function addPetInTutor(pets: Pet, tutorIndex: number): void {
-    tutor[tutorIndex].pets.push(pets);
-}
 
-export function updatePetInTutor(pet: Pet, indexTutor: number, indexPet: number): void {
-    tutor[indexTutor].pets.splice(indexPet, 1, pet);
-}
-
-export function deletePetInTutor(indexTutor: number, indexPet: number): void {
-
-    tutor[indexTutor].pets.splice(indexPet, 1);
-}
-
-export {
-    createTutor,
-    getTutors,
-    updateTutorById,
-    deleteTutor,
-}
