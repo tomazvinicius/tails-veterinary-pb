@@ -1,18 +1,19 @@
-
 import { Request, Response } from "express";
-import TutorService from "../services/TutorService";
+import TutorService from "../services/tutorservice";
 import { Tutor } from "../models/Tutor";
+import StatusCodes from "http-status-codes";
 
 const tutorService = new TutorService();
 
- class TutorController {
-  async getTutors(req: Request, res: Response): Promise<void> {
+class TutorController {
+  async getAllTutors(req: Request, res: Response): Promise<void> {
     try {
-      const tutors: Tutor[] = await tutorService.getTutors();
-      res.json(tutors);
+      const tutors: Tutor[] = await tutorService.getAllTutors();
+      res.status(StatusCodes.OK).json(tutors);
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch tutors" });
-      console.log(error);
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Failed to fetch tutors" });
     }
   }
 
@@ -20,9 +21,11 @@ const tutorService = new TutorService();
     try {
       const tutorData: Tutor = req.body;
       const createdTutor: Tutor = await tutorService.createTutor(tutorData);
-      res.json(createdTutor);
+      res.status(StatusCodes.CREATED).json(createdTutor);
     } catch (error) {
-      res.status(500).json( console.log );
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Failed to create tutor" });
     }
   }
 
@@ -34,25 +37,23 @@ const tutorService = new TutorService();
         tutorId,
         tutorData
       );
-      res.json(editedTutor);
+      res.status(StatusCodes.OK).json(editedTutor);
     } catch (error) {
-      res.status(500).json({ error: "Failed to edit tutor" });
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Failed to edit tutor" });
     }
   }
 
   async deleteTutor(req: Request, res: Response): Promise<void> {
     try {
       const tutorId: string = req.params.id;
-      await tutorService.deleteTutor(tutorId);
-      res.sendStatus(204);
+      const tutorDeleted = await tutorService.deleteTutor(tutorId);
+      res.status(StatusCodes.NO_CONTENT).json(tutorDeleted);
     } catch (error) {
-      res.status(500).json({ error: "Failed to delete tutor" });
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to delete tutor" });
     }
   }
 }
 
 export default TutorController;
-
-
-
-

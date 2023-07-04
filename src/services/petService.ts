@@ -1,27 +1,50 @@
 import { Pet } from "../models/Pet";
 import PetRepository from "../repositories/petRepository";
-
+import TutorRepository from "../repositories/tutorRepository";
 const petRepository = new PetRepository();
+const tutorRepository = new TutorRepository();
 
 class PetService {
-  async updatePet(petId: string, petData: Pet): Promise<Pet> {
-    try {
-      const pet = await petRepository.updatePet(petId, petData);
-      if (!pet) {
-        throw new Error("Pet not found");
-      }
-      return pet;
-    } catch (error) {
-      throw new Error("Failed to edit pet");
+  async updatePet(petData: Pet, petId: string, tutorId: string) {
+    const existingTutor = await tutorRepository.findById(tutorId);
+
+    if (!existingTutor) {
+      throw new Error("Tutor not found");
     }
+
+    const petIndex = existingTutor.pets.findIndex(
+      (pet) => pet._id.toString() === petId
+    );
+
+    if (petIndex === -1) {
+      throw new Error("Pet not found");
+    }
+
+    const updatePet: any = await petRepository.update(
+      petData,
+      petIndex.toString(),
+      existingTutor
+    );
+    return updatePet;
   }
 
-  async deletePet(petId: string): Promise<void> {
-    try {
-      await petRepository.deletePet(petId);
-    } catch (error) {
-      throw new Error("Failed to delete pet");
+  async deletePet(tutorId: string, petId: string) {
+    const existingTutor = await tutorRepository.findById(tutorId);
+
+    if (!existingTutor) {
+      throw new Error("Tutor not found");
     }
+
+    const petIndex = existingTutor.pets.findIndex(
+      (pet) => pet._id.toString() === petId
+    );
+
+    if (petIndex === -1) {
+      throw new Error("Pet not found");
+    }
+
+    await petRepository.delete(petIndex.toString(), existingTutor);
+    return;
   }
 }
 

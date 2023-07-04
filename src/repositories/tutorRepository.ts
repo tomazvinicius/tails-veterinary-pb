@@ -1,55 +1,65 @@
+import { Pet } from "../models/Pet";
 import TutorModel, { Tutor } from "../models/Tutor";
 
 class TutorRepository {
-
-    async createTutor(tutorData: Tutor): Promise<Tutor> {
-        try {
-          const tutor: Tutor = await TutorModel.create(tutorData);
-          return tutor;
-        } catch (error) {
-          throw new Error("Failed to create tutor");
-        }
-      }
-      async updateTutor(tutorId: string, tutorData: Tutor): Promise<Tutor | null> {
-        try {
-          const tutor: Tutor | null = await TutorModel.findByIdAndUpdate(tutorId, tutorData, {
-            new: true,
-          });
-          return tutor;
-        } catch (error) {
-          throw new Error("Failed to edit tutor");
-        }
-      }
-
-      
-  async deleteTutor(tutorId: string): Promise<void> {
-    try {
-      await TutorModel.findByIdAndDelete(tutorId);
-    } catch (error) {
-      throw new Error("Failed to delete tutor");
-    }
-  }
-    
   async getAllTutors(): Promise<Tutor[]> {
     try {
-      const tutors: Tutor[] = await TutorModel.find();
+      const tutors = await TutorModel.find();
       return tutors;
     } catch (error) {
       throw new Error("Failed to fetch tutors");
     }
   }
 
-  async addPetToTutor(tutorId: string, petId: string): Promise<Tutor | null> {
+  async createTutor(tutorData: Tutor): Promise<Tutor> {
     try {
-      const tutor: Tutor | null = await TutorModel.findByIdAndUpdate(
-        tutorId,
-        { $push: { pets: petId } },
-        { new: true }
-      );
+      const tutor = await TutorModel.create(tutorData);
       return tutor;
     } catch (error) {
-      throw new Error("Failed to add pet to tutor");
+      throw new Error("Failed to create tutor");
     }
+  }
+
+  async updateTutor(tutorId: string, tutorData: Tutor): Promise<Tutor | null> {
+    try {
+      const tutor = await TutorModel.findByIdAndUpdate(tutorId, tutorData, {
+        new: true,
+      });
+      return tutor;
+    } catch (error) {
+      throw new Error("Failed to edit tutor");
+    }
+  }
+
+  async deleteTutor(tutorId: string): Promise<void> {
+    try {
+      await TutorModel.findByIdAndDelete(tutorId);
+      return;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to delete tutor");
+    }
+  }
+
+  async addPetToTutor(tutorId: string, petData: Pet): Promise<Tutor | null> {
+    return TutorModel.findByIdAndUpdate(
+      tutorId,
+      { $push: { pets: petData } },
+      { new: true }
+    );
+  }
+
+  async verifyTutor(tutorId: string): Promise<any> {
+    return TutorModel.findById(tutorId);
+  }
+
+  async findById(tutorId: string) {
+    const tutor = await TutorModel.findOne({ _id: tutorId });
+    return tutor;
+  }
+
+  async auth(email: string, password: string): Promise<any> {
+    return TutorModel.findOne({ email: email, password: password });
   }
 }
 

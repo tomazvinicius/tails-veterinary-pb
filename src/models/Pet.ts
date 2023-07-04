@@ -1,4 +1,5 @@
 import { Schema, Document, model } from "mongoose";
+import TutorModel from "./Tutor";
 
 export interface Pet extends Document {
   name: string;
@@ -16,7 +17,7 @@ const petSchema = new Schema<Pet>({
   },
   species: {
     type: String,
-    required: [true, "Species is required"],
+    required: [true, "Specie is required"],
   },
   carry: {
     type: String,

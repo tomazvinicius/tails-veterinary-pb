@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import { Schema, Document, model, Types } from "mongoose";
+import { Pet } from "./Pet";
 
 export interface Tutor extends Document {
   name: string;
@@ -7,14 +8,14 @@ export interface Tutor extends Document {
   date_of_birth: Date;
   zip_code: string;
   password: string;
-  pets: Types.Array<Types.ObjectId>;
+  pets: Pet[];
 }
 
-const tutorSchema: Schema<Tutor> = new Schema<Tutor>({
+const tutorSchema = new Schema<Tutor>({
   name: {
     type: String,
     required: [true, "Name is required"],
-    minlength: [4, "Name must be at least 4 characters long"],
+    minlength: [4, "Name must be greater"],
   },
   phone: {
     type: String,
@@ -27,7 +28,7 @@ const tutorSchema: Schema<Tutor> = new Schema<Tutor>({
       validator: function (email: string) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       },
-      message: (props: { value: string }) => `${props.value} is not a valid email address!`,
+      message: (props) => `${props.value} is not a valid email address!`,
     },
     unique: true,
   },
@@ -38,7 +39,7 @@ const tutorSchema: Schema<Tutor> = new Schema<Tutor>({
   zip_code: {
     type: String,
     required: [true, "Zip code is required"],
-    minlength: [9, "Zip code must be 9 characters long"],
+    minlength: [9, "Zip code required 9 of length"],
   },
   password: {
     type: String,
@@ -46,12 +47,12 @@ const tutorSchema: Schema<Tutor> = new Schema<Tutor>({
   },
   pets: [
     {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.Mixed,
       ref: "Pet",
     },
   ],
 });
 
-const TutorModel = mongoose.model<Tutor>("Tutor", tutorSchema);
+const TutorModel = model<Tutor>("Tutor", tutorSchema);
 
 export default TutorModel;

@@ -3,13 +3,13 @@ const router = express.Router();
 
 import TutorController from "../controllers/TutorController";
 const tutorController = new TutorController();
+import { authenticateTutor } from "../middleware/authentication";
 
+router.get("/tutors", authenticateTutor, tutorController.getAllTutors);
+router.post("/tutor", tutorController.createTutor);
+router
+  .route("/tutor/:id")
+  .put(authenticateTutor, tutorController.updateTutor)
+  .delete(authenticateTutor, tutorController.deleteTutor);
 
-router.route("/tutor").post(tutorController.createTutor);
-router.route("/tutors").get(tutorController.getTutors)
-router.route("/tutor/:id").put(tutorController.updateTutor)
-router.route("/tutor/:id").delete(tutorController.deleteTutor)
-
-export default router
-
-
+export default router;

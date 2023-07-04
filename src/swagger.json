@@ -1,0 +1,505 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Tails veterinary",
+    "description": "",
+    "contact": {}
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "securityDefinitions": {},
+  "schemes": [],
+  "paths": {
+    "/tutors": {
+      "get": {
+        "description": "Get tutors",
+        "summary": "getTutors",
+        "tags": ["Tutor"],
+        "operationId": "getTutors",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "default": ""
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/tutor": {
+      "post": {
+        "description": "",
+        "summary": "createTutor",
+        "tags": ["Tutor"],
+        "operationId": "createTutor",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/createTutorRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "default": ""
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/tutor/{id}": {
+      "put": {
+        "description": "",
+        "summary": "updateTutor",
+        "tags": ["Tutor"],
+        "operationId": "updateTutor",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The tutor id"
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/updateTutorRequest"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "default": ""
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "description": "",
+        "summary": "deleteTutor",
+        "tags": ["Tutor"],
+        "operationId": "deleteTutor",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The tutor id"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "default": ""
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/pet/{id}": {
+      "post": {
+        "description": "",
+        "summary": "createPet",
+        "tags": ["Pet"],
+        "operationId": "createPet",
+        "deprecated": false,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The tutor id"
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/createPetRequest"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "default": ""
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/pet/{petId}/tutor/{tutorId}": {
+      "put": {
+        "description": "",
+        "summary": "updatePet",
+        "tags": ["Pet"],
+        "operationId": "updatePet",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "petId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The pet id"
+          },
+          {
+            "in": "path",
+            "name": "tutorId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The tutor id"
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/updatePetRequest"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "default": ""
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "description": "",
+        "summary": "deletePet",
+        "tags": ["Pet"],
+        "operationId": "deletePet",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "petId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The pet id"
+          },
+          {
+            "in": "path",
+            "name": "tutorId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The tutor id"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "default": ""
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth": {
+      "post": {
+        "description": "",
+        "summary": "authRequest",
+        "tags": ["Auth"],
+        "operationId": "authRequest",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/authRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "default": ""
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "definitions": {
+    "createTutorRequest": {
+      "title": "createTutorRequest",
+      "example": {
+        "name": "Vinicius Tomaz",
+        "phone": "(69) 999326309",
+        "email": "vinicius.tomaz.pb@compasso.com", 
+        "date_of_birth": "2001-04-30",
+        "zip_code": "76913-0005",
+        "password": "1234"
+      },
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "date_of_birth": {
+          "type": "string"
+        },
+        "zip_code": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "phone",
+        "email",
+        "date_of_birth",
+        "zip_code",
+        "password"
+      ]
+    },
+    "updateTutorRequest": {
+      "title": "updateTutorRequest",
+      "example": {
+        "name": "Amanda Tomaz",
+        "phone": "(64) 97384-6858",
+        "email": "amanda.tomaz@gmail.com",
+        "date_of_birth": "1999-04-19",
+        "zip_code": "769130005",
+        "password": "1234"
+      },
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "date_of_birth": {
+          "type": "string"
+        },
+        "zip_code": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "phone",
+        "email",
+        "date_of_birth",
+        "zip_code",
+        "password"
+      ]
+    },
+    "createPetRequest": {
+      "title": "createPetRequest",
+      "example": {
+        "name": "Milton",
+        "species": "cat",
+        "carry": "m",
+        "weight": 3,
+        "date_of_birth": "2019-04-24 10:10"
+      },
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "species": {
+          "type": "string"
+        },
+        "carry": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "date_of_birth": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "species", "carry", "weight", "date_of_birth"]
+    },
+    "updatePetRequest": {
+      "title": "updatePetRequest",
+      "example": {
+        "name": "Nana",
+        "species": "cat",
+        "carry": "p",
+        "weight": 2,
+        "date_of_birth": "2019-04-24 10:10"
+      },
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "species": {
+          "type": "string"
+        },
+        "carry": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "date_of_birth": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "species", "carry", "weight", "date_of_birth"]
+    },
+    "authRequest": {
+      "title": "authRequest",
+      "example": {
+        "email": "vinicius.tomaz.pb@compasso.com", 	
+        "password": "1234"
+      },
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": ["email", "password"]
+    }
+  },
+  "tags": [
+    {
+      "name": "Tutor",
+      "description": ""
+    },
+    {
+      "name": "Pet",
+      "description": ""
+    }
+  ]
+}
