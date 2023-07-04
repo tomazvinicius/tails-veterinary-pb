@@ -32,14 +32,14 @@ So, you have this new mission, to build the POC foundations of this brand new mi
 
 - `Feature 6`: PUT/pet/:petId/tutor/:tutorId -> updates a pet's info
 
-- `Feature 7`: DELETE/pet/:petId/tutor/:tutorId -> deletes a pet from a tutor. 
+- `Feature 7`: DELETE/pet/:petId/tutor/:tutorId -> deletes a pet from a tutor.
+  
+- `Feature 8`: POST/auth -> authenticate tutor. 
 
 ## ✔️ Technologies
 
 - ``Typescript``
 - ``Express``
-- ``Prettier``
-- ``Eslint``
 - ``Insomnia``
 - ``Swagger``
 - ``Trello``
@@ -50,6 +50,6 @@ After downloading the project, you must open it in visual studio code and open t
 - npm i - command responsible for installing all project dependencies
 - tsc - to compile TypeScript files into JavaScript
 - npm start - to execute the project
-- download the insomnia folder to test the routes
+- open in browser localhost:3000/api-docs
 
 
