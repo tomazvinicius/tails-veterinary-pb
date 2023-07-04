@@ -356,7 +356,8 @@
                     "type": "string"
                 },
                 "date_of_birth": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 },
                 "zip_code": {
                     "type": "string"
@@ -396,7 +397,8 @@
                     "type": "string"
                 },
                 "date_of_birth": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 },
                 "zip_code": {
                     "type": "string"
@@ -469,7 +471,8 @@
                     "format": "int32"
                 },
                 "date_of_birth": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 }
             },
             "required": ["name", "species", "carry", "weight", "date_of_birth"]

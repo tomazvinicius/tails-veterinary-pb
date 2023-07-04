@@ -25,16 +25,18 @@ class PetRepository {
     return pets;
   }
 
-  async update(petData: Pet, petIndex: any, tutor: Tutor) {
+  async update(petData: Pet, petIndex: any, tutor: Tutor,  petId: string) {
     petData._id = tutor.pets[petIndex]._id;
     petData.__v = tutor.pets[petIndex].__v;
     const updatedPet = (tutor.pets[petIndex] = petData);
+    await PetModel.findByIdAndUpdate(petId, petData, { new: false });
     await tutor.save();
     return updatedPet;
   }
 
-  async delete(petIndex: any, tutor: Tutor) {
+  async delete(petIndex: any, tutor: Tutor, petId: string) {
     tutor.pets.splice(petIndex, 1);
+    await PetModel.findByIdAndDelete(petId);
     await tutor.save();
     return;
   }

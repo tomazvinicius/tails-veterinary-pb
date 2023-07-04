@@ -25,7 +25,8 @@ class TutorRepository {
       const tutor = await TutorModel.findByIdAndUpdate(tutorId, tutorData, {
         new: true,
       });
-      return tutor;
+      const tutorUpdated = await this.findById(tutor?._id);
+      return tutorUpdated;
     } catch (error) {
       throw new Error("Failed to edit tutor");
     }

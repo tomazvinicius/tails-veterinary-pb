@@ -23,7 +23,8 @@ class PetService {
     const updatePet: any = await petRepository.update(
       petData,
       petIndex.toString(),
-      existingTutor
+      existingTutor,
+      petId
     );
     return updatePet;
   }
@@ -43,7 +44,7 @@ class PetService {
       throw new Error("Pet not found");
     }
 
-    await petRepository.delete(petIndex.toString(), existingTutor);
+    await petRepository.delete(petIndex.toString(), existingTutor, petId);
     return;
   }
 }
